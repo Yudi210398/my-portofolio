@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #090e1c;
+  --color-surface: #10192b;
+  --color-border: #26324c;
+  --color-foreground: #f5f7ff;
+  --color-muted: #afbad1;
+  --color-accent-blue: #6378ff;
+  --color-accent-violet: #8b5cf6;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  --content-width: 75rem;
+  --reading-width: 65ch;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+}
+
+html {
+  scroll-padding-top: 1.5rem;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--color-accent-blue);
+  color: var(--color-background);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 4px;
+}
+
+.content-container {
+  width: min(calc(100% - 2rem), var(--content-width));
+  margin-inline: auto;
+}
+
+.reading-width {
+  max-width: var(--reading-width);
+}
+
+.site-section {
+  padding-block: clamp(3rem, 6vw, 6rem);
+}
+
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.site-header__inner {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+}
+
+.site-header__identity {
+  display: inline-flex;
+  min-height: 2.75rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground);
+  text-decoration: none;
+}
+
+.site-header__identity:hover .site-header__name {
+  color: var(--color-accent-blue);
+}
+
+.site-header__name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.site-header__role {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+@media (min-width: 48rem) {
+  .content-container {
+    width: min(calc(100% - 3rem), var(--content-width));
+  }
+}
+
+@media (min-width: 64rem) {
+  .content-container {
+    width: min(calc(100% - 4rem), var(--content-width));
+  }
+}
