@@ -2,9 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { navigationLinks } from "./navigation-links";
+import navStyles from "./navigation-link.module.css";
 import styles from "./mobile-nav.module.css";
 
-export function MobileNav({ onOpenChange }: { onOpenChange: (open: boolean) => void }) {
+export function MobileNav({
+  onOpenChange,
+  activeSection,
+  onNavigate,
+}: {
+  onOpenChange: (open: boolean) => void;
+  activeSection: string | null;
+  onNavigate: (href: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -71,8 +80,12 @@ export function MobileNav({ onOpenChange }: { onOpenChange: (open: boolean) => v
             <a
               key={link.href}
               href={link.href}
-              onClick={() => updateOpen(false)}
-              className="flex min-h-12 items-center rounded-md px-4 text-sm font-medium text-muted hover:bg-surface hover:text-foreground"
+              aria-current={activeSection === link.href.slice(2) ? "location" : undefined}
+              onClick={() => {
+                onNavigate(link.href);
+                updateOpen(false);
+              }}
+              className={`${navStyles.link} flex min-h-12 items-center rounded-lg px-4 text-sm font-medium`}
             >
               {link.label}
             </a>

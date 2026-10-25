@@ -17,7 +17,19 @@ test("visitor journey and published links", async ({ page }) => {
     .getByRole("link", { name: "Contact" }).click();
   await expect(page).toHaveURL(/#contact$/);
   await expect(page.getByRole("heading", { level: 2, name: /build something great/i })).toBeVisible();
-  await expect(page.locator('#contact a[href^="mailto:"], #contact a[href^="https:"]')).toHaveCount(0);
+  const contact = page.locator("#contact");
+  await expect(contact.getByRole("link", { name: "Visit GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/Yudi210398",
+  );
+  for (const channel of ["Email", "LinkedIn", "WhatsApp"]) {
+    const method = contact.getByRole("listitem").filter({
+      has: page.getByRole("heading", { name: channel, exact: true }),
+    });
+    await expect(method).toBeVisible();
+    await expect(method.getByRole("link")).toHaveCount(0);
+  }
+  await expect(contact.getByRole("link")).toHaveCount(1);
 });
 
 test("keyboard can reach Hero CTA with visible focus", async ({ page }) => {

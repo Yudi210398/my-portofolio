@@ -1,0 +1,23 @@
+.link {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-muted);
+  transition: background-color 220ms ease-out, border-color 220ms ease-out, color 220ms ease-out;
+}
+
+.link:hover:not([aria-current="location"]) {
+  background: rgb(99 120 255 / 7%);
+  color: var(--color-foreground);
+}
+
+.link[aria-current="location"] {
+  border-color: rgb(99 120 255 / 27%);
+  background: rgb(99 120 255 / 12%);
+  color: #b1beff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

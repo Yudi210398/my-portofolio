@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { CV_PATH, getCvHref } from "@/config/public-contact";
 import { Container } from "./container";
 import { MobileNav } from "./mobile-nav";
+import navStyles from "./navigation-link.module.css";
 import { navigationLinks } from "./navigation-links";
+import { useActiveSection } from "./use-active-section";
 
 function DownloadIcon() {
   return (
@@ -65,6 +67,7 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const scrolledRef = useRef(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { activeSection, navigateToSection } = useActiveSection(pathname);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -100,7 +103,7 @@ export function SiteHeader() {
           </Link>
           <div className="flex items-center gap-2 lg:hidden">
             <CvAction compact />
-            <MobileNav onOpenChange={setMenuOpen} />
+            <MobileNav onOpenChange={setMenuOpen} activeSection={activeSection} onNavigate={navigateToSection} />
           </div>
           <div className="hidden items-center gap-3 lg:flex">
             <nav aria-label="Primary navigation" className="flex items-center gap-1">
@@ -108,7 +111,9 @@ export function SiteHeader() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-muted hover:text-foreground"
+                  aria-current={activeSection === link.href.slice(2) ? "location" : undefined}
+                  onClick={() => navigateToSection(link.href)}
+                  className={`${navStyles.link} inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium`}
                 >
                   {link.label}
                 </a>
