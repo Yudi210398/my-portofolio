@@ -1,30 +1,35 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const steps = [
   {
     number: "01",
     title: "Understand",
     icon: "search",
-    description: "Clarify the problem, constraints, and expected behavior before implementation.",
+    description:
+      "Clarify the problem, constraints, and expected behavior before implementation.",
   },
   {
     number: "02",
     title: "Design",
     icon: "layers",
-    description: "Define clear responsibilities and data flow with a focus on data integrity.",
+    description:
+      "Define clear responsibilities and data flow with a focus on data integrity.",
   },
   {
     number: "03",
     title: "Build",
     icon: "code",
-    description: "Implement a simple, maintainable solution while considering security and correctness.",
+    description:
+      "Implement a simple, maintainable solution while considering security and correctness.",
   },
   {
     number: "04",
     title: "Verify",
     icon: "check",
-    description: "Test important behavior and validate the result against the requirements.",
+    description:
+      "Test important behavior and validate the result against the requirements.",
   },
 ] as const;
 
@@ -73,10 +78,14 @@ function StepIcon({ name }: { name: StepIconName }) {
 
 export function EngineeringApproach() {
   return (
-    <Section id="focus" aria-labelledby="focus-title" className="border-t border-border">
+    <Section
+      id="focus"
+      aria-labelledby="focus-title"
+      className="border-t border-border"
+    >
       <Container>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
-          <div className="max-w-[56ch]">
+          <ScrollReveal className="max-w-[56ch]">
             <p className="text-xs font-semibold tracking-[0.16em] text-accent-blue uppercase sm:text-sm">
               02 / Engineering approach
             </p>
@@ -92,9 +101,9 @@ export function EngineeringApproach() {
               understanding requirements to designing clear boundaries,
               implementing solutions, and verifying expected behavior.
             </p>
-          </div>
+          </ScrollReveal>
           <ol className="space-y-9">
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <li
                 key={step.title}
                 className="relative flex gap-4 pl-9 before:absolute before:top-5 before:-bottom-14 before:left-[5px] before:w-px before:bg-accent-blue/45 last:before:hidden sm:pl-11"
@@ -109,7 +118,7 @@ export function EngineeringApproach() {
                 >
                   <StepIcon name={step.icon} />
                 </span>
-                <div className="min-w-0 flex-1">
+                <ScrollReveal className="min-w-0 flex-1" delay={index * 0.04}>
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span className="text-xs font-semibold tracking-[0.12em] text-accent-blue">
                       {step.number}
@@ -121,7 +130,7 @@ export function EngineeringApproach() {
                   <p className="mt-2 max-w-[52ch] text-base leading-relaxed text-muted">
                     {step.description}
                   </p>
-                </div>
+                </ScrollReveal>
               </li>
             ))}
           </ol>

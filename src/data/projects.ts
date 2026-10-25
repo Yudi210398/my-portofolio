@@ -18,7 +18,7 @@ export const projects: readonly Project[] = [
       },
       {
         title: "Legacy PHP Integration",
-        status: "completed",
+        status: "pending",
         detail:
           "Integration with the existing PHP application remains unfinished.",
       },
@@ -29,6 +29,37 @@ export const projects: readonly Project[] = [
       },
     ],
     stack: ["NestJS", "TypeScript", "MySQL", "Prisma", "Fonnte API", "Docker"],
+    caseStudy: {
+      businessProblem:
+        "A tailoring business needs fitting reminders and order-completion notifications while retaining its existing PHP application.",
+      responsibilities: [
+        "Backend development of a separate, modular NestJS notification service.",
+        "Core implementation of scheduled fitting reminders and an internal API for order notifications.",
+        "Implementation of database-backed idempotency, notification logging, error handling, and safeguards against unsafe automatic retries.",
+      ],
+      architecture: [
+        "The owner reports a modular NestJS backend written in TypeScript, with scheduled reminders and an internal notification API.",
+        "MySQL, Prisma, Docker, and Fonnte API are part of the reported project stack; the service has read-only access to legacy business data.",
+        "Integration with the existing PHP application has not been completed.",
+      ],
+      decisions: [
+        {
+          title: "Preserve the existing application",
+          detail:
+            "The notification backend is separate from the legacy PHP application. Access to legacy business data is read-only; application integration remains pending.",
+        },
+        {
+          title: "Guard notification behavior",
+          detail:
+            "Database-backed idempotency and safeguards against unsafe automatic retries are part of the reported core implementation. Exact transaction and retry rules are not published.",
+        },
+      ],
+      failureAndTesting: [
+        "Notification logging and error handling are part of the reported backend implementation.",
+        "Safeguards are in place against unsafe automatic retries; specific retry algorithms and failure outcomes are not claimed here.",
+        "Local automated testing of the core backend is complete according to the owner. Test coverage and specific scenarios have not been independently reviewed for this portfolio.",
+      ],
+    },
   },
 ];
 

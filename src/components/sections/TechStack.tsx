@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const primaryStack = [
   {
@@ -62,9 +63,9 @@ const otherTechnologies = [
 
 export function TechStack() {
   return (
-    <Section aria-labelledby="stack-title" className="border-t border-border">
+    <Section id="tech-stack" aria-labelledby="stack-title" className="border-t border-border">
       <Container>
-        <div className="max-w-3xl">
+        <ScrollReveal className="max-w-3xl">
           <p className="text-xs font-semibold tracking-[0.16em] text-accent-blue uppercase sm:text-sm">
             03 / Tech stack
           </p>
@@ -79,13 +80,15 @@ export function TechStack() {
             Technologies I work with across backend development, data, and web
             applications.
           </p>
-        </div>
+        </ScrollReveal>
 
         <ul className="mt-12 grid gap-4 md:grid-cols-3">
-          {primaryStack.map((technology) => (
-            <li
+          {primaryStack.map((technology, index) => (
+            <ScrollReveal
+              as="li"
               key={technology.name}
               className="flex min-h-52 flex-col items-center justify-center rounded-2xl border border-border bg-surface px-6 py-8 text-center"
+              delay={index * 0.05}
             >
               <Image
                 src={technology.logo}
@@ -99,7 +102,7 @@ export function TechStack() {
                 {technology.name}
               </h3>
               <p className="mt-1 text-sm text-muted">{technology.role}</p>
-            </li>
+            </ScrollReveal>
           ))}
         </ul>
 
@@ -108,10 +111,11 @@ export function TechStack() {
             Other technologies
           </h3>
           <div className="mt-6">
-            {otherTechnologies.map((group) => (
-              <div
+            {otherTechnologies.map((group, index) => (
+              <ScrollReveal
                 key={group.category}
                 className="grid gap-4 border-t border-border py-6 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-8"
+                delay={index * 0.03}
               >
                 <h4 className="pt-1 text-sm font-semibold text-muted">
                   {group.category}
@@ -138,7 +142,7 @@ export function TechStack() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const identityDetails = [
   {
@@ -21,10 +22,10 @@ const identityDetails = [
 
 export function About() {
   return (
-    <Section aria-labelledby="about-title" className="border-t border-border">
+    <Section id="about" aria-labelledby="about-title" className="border-t border-border">
       <Container>
         <div className="grid items-center gap-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)_minmax(0,0.95fr)] lg:gap-6 xl:gap-10">
-          <div className="min-w-0">
+          <ScrollReveal className="min-w-0">
             <p className="text-xs font-semibold tracking-[0.16em] text-accent-blue uppercase sm:text-sm">
               01 / About me
             </p>
@@ -40,7 +41,7 @@ export function About() {
               and TypeScript. I start with the problem and design for clear
               responsibilities, data integrity, and verifiable behavior.
             </p>
-          </div>
+          </ScrollReveal>
 
           <div
             aria-hidden="true"
@@ -65,12 +66,12 @@ export function About() {
           </div>
 
           <div className="min-w-0 border-t border-border">
-            {identityDetails.map((detail) => (
-              <div
+            {identityDetails.map((detail, index) => (
+              <ScrollReveal
                 key={detail.label}
-                className="border-b border-border py-5 first:pt-0 last:pb-0"
+                className="border-b border-border py-5 first:pt-4 last:pb-0"
+                delay={index * 0.04}
               >
-                <br />
                 <p className="text-xs font-semibold tracking-[0.14em] text-accent-blue uppercase">
                   {detail.label}
                 </p>
@@ -80,9 +81,8 @@ export function About() {
                 <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">
                   {detail.description}
                 </p>
-              </div>
+              </ScrollReveal>
             ))}
-            <br />
           </div>
         </div>
       </Container>

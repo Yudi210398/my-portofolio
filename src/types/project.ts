@@ -8,6 +8,17 @@ export type ProjectMilestone = {
   detail: string;
 };
 
+export type CaseStudy = {
+  businessProblem: string;
+  responsibilities: readonly string[];
+  architecture: readonly string[];
+  decisions: readonly {
+    title: string;
+    detail: string;
+  }[];
+  failureAndTesting: readonly string[];
+};
+
 type ProjectBase = {
   slug: string;
   title: string;
@@ -21,7 +32,6 @@ type ProjectBase = {
     label: string;
     href: string;
   }[];
-  caseStudy?: string;
 };
 
 export type PublishedProject = ProjectBase & {
@@ -32,6 +42,7 @@ export type PublishedProject = ProjectBase & {
   milestones?: readonly ProjectMilestone[];
   stack: readonly string[];
   status: ProjectStatus;
+  caseStudy?: CaseStudy;
 };
 
 export type UnpublishedProject = ProjectBase & {

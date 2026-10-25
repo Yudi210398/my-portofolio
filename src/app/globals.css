@@ -24,7 +24,17 @@
 }
 
 html {
-  scroll-padding-top: 1.5rem;
+  scroll-padding-top: calc(4.5625rem + 1.5rem);
+}
+
+html:has(#home) {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(#home) {
+    scroll-behavior: auto;
+  }
 }
 
 body {
