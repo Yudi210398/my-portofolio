@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/container";
 import { CaseStudySection } from "@/components/case-study/CaseStudySection";
+import { CatalogCaseStudyIntro } from "@/components/case-study/CatalogCaseStudyIntro";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { getPublishedProjects } from "@/data/projects";
 
@@ -66,6 +67,9 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           </Link>
         </nav>
 
+        {caseStudy.catalogShowcase ? (
+          <CatalogCaseStudyIntro project={project} showcase={caseStudy.catalogShowcase} />
+        ) : (
         <header className="grid gap-10 border-b border-border pb-14 pt-12 sm:pb-20 sm:pt-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.6fr)] lg:gap-20">
           <div className="min-w-0">
             <p className="text-xs font-semibold tracking-[0.16em] text-accent-blue uppercase sm:text-sm">
@@ -92,7 +96,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
                   Status
                 </dt>
                 <dd className="mt-2 font-medium text-accent-blue">
-                  {project.status === "in-progress" ? "In Progress" : "Completed"}
+                  {project.status === "in-progress" ? "In Progress" : project.status === "pre-release" ? "Pre-release" : "Completed"}
                 </dd>
               </div>
               <div>
@@ -106,11 +110,10 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
             </dl>
           </div>
         </header>
+        )}
 
         <p className="max-w-[75ch] py-8 text-sm leading-relaxed text-muted sm:py-10">
-          Implementation details below are reported by the project owner. The
-          separate backend repository has not been independently reviewed for
-          this case study.
+          {caseStudy.sourceNote ?? "Implementation details below are reported by the project owner. The separate backend repository has not been independently reviewed for this case study."}
         </p>
 
         <CaseStudySection number="01" id="business-problem" title="Business Problem">
@@ -136,6 +139,19 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         </CaseStudySection>
 
         <CaseStudySection number="03" id="system-architecture" title="System Architecture">
+          {caseStudy.architectureFlow && (
+            <ol aria-label="System architecture flow" className="mb-8 space-y-3 text-sm">
+              {caseStudy.architectureFlow.map((step, index, steps) => (
+                <li key={step} className="flex items-start gap-4">
+                  <span aria-hidden="true" className="shrink-0 font-mono text-accent-blue">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0">
+                    <p className="font-medium text-foreground">{step}</p>
+                    {index < steps.length - 1 && <svg aria-hidden="true" className="mt-3 text-muted" width="16" height="20" viewBox="0 0 16 20" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 1v16m-5-5 5 5 5-5" /></svg>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
           <ScrollReveal>
             <ul className="space-y-5">
               {caseStudy.architecture.map((item) => (
@@ -181,6 +197,11 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           id="current-results"
           title="Current Results & Remaining Work"
         >
+          {caseStudy.results && (
+            <ul className="mb-10 space-y-4">
+              {caseStudy.results.map((result) => <li key={result}>{result}</li>)}
+            </ul>
+          )}
           {project.milestones?.length ? (
             <ol className="space-y-6">
               {project.milestones.map((milestone, index) => (
@@ -203,6 +224,14 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
                 <p>{project.progress}</p>
               </ScrollReveal>
             )
+          )}
+          {caseStudy.remainingWork && (
+            <div className="mt-10">
+              <h3 className="text-lg font-semibold text-foreground">Remaining work before release</h3>
+              <ul className="mt-4 list-disc space-y-2 pl-5">
+                {caseStudy.remainingWork.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </div>
           )}
         </CaseStudySection>
 

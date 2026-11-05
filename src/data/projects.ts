@@ -82,7 +82,7 @@ export const projects: readonly Project[] = [
         title: "WhatsApp Contact Integration",
         status: "completed",
         statusLabel: "Implemented",
-        detail: "Official WhatsApp number and final configuration.",
+        detail: "WhatsApp contact integration implemented by the owner. Order confirmation remains manual.",
       },
       {
         title: "Final QA & Production Release",
@@ -91,6 +91,84 @@ export const projects: readonly Project[] = [
           "Asset optimization, final testing (accessibility, SEO, performance), and go-live approval.",
       },
     ],
+    caseStudy: {
+      sourceNote:
+        "Project details and preliminary QA are reported by the project owner. Dina Cake remains pre-release; these checks are not final production certification.",
+      catalogShowcase: {
+        subtitle: "A Digital Catalog for a Home-Based Cake Business",
+        summary:
+          "A mobile-first catalog website that helps customers explore homemade cakes, understand the ordering process, and contact Mama Dina through WhatsApp.",
+        projectType: "Real-world Small Business Website",
+        ownershipRole: "Solo Developer / Product & Technical Decision Owner",
+        architecture: "Static Single-Page Website",
+        steps: [
+          { title: "Contact Mama Dina", description: "Customers initiate contact through WhatsApp." },
+          { title: "Share Product Preferences", description: "Customers share cake types, quantities, and their preferred date." },
+          { title: "Confirm Availability & Schedule", description: "Mama Dina manually confirms availability, order details, and scheduling." },
+          { title: "Order Preparation", description: "Products are prepared according to the confirmed arrangement." },
+        ],
+      },
+      businessProblem:
+        "Dina Cake relied primarily on word-of-mouth promotion, local shop consignments, and WhatsApp communication. Without a centralized digital catalog, customers could need to contact the owner just to discover available products. The MVP makes homemade cakes easier to discover and explains how to initiate an order, while keeping business confirmation with Mama Dina.",
+      responsibilities: [
+        "Understand the business problem, define the MVP scope, and choose an implementation architecture suited to a small business catalog.",
+        "Lead visual and responsive design decisions, and specify requirements and acceptance criteria.",
+        "Use Codex to accelerate implementation, then review code and visual output. The human owner owns product and technical decisions; implementation is AI-assisted.",
+        "Run and review browser tests, manage Git and preview workflows, and evaluate release readiness.",
+      ],
+      architectureFlow: [
+        "Browser", "Static hosting", "HTML / CSS / JavaScript / local assets",
+        "Catalog & client-side interactions", "External WhatsApp contact", "Manual business confirmation",
+      ],
+      architecture: [
+        "Dina Cake is a static single-page website. It has no application backend, database, or customer authentication, and stores no customer order data in the website.",
+        "Product data is managed through repository content. Content updates require editing that content and publishing a new static version.",
+        "Client-side JavaScript handles navigation and UI interactions. Customers leave the catalog to contact Mama Dina through WhatsApp; availability, scheduling, and order confirmation remain manual.",
+      ],
+      decisions: [
+        {
+          title: "Vanilla HTML/CSS/JavaScript instead of Next.js",
+          detail: "The Dina Cake MVP does not need SSR, complex routing, or application-level server logic. A static implementation keeps delivery simple. The trade-off is more manual maintenance for content updates and component reuse. This portfolio uses Next.js; the Dina Cake project itself does not.",
+        },
+        {
+          title: "No backend or database",
+          detail: "WhatsApp supports the existing manual ordering process. Keeping it outside the website avoids unnecessary infrastructure, with no automated order persistence, realtime stock management, checkout, online payments, or transaction processing.",
+        },
+        {
+          title: "Native browser capabilities",
+          detail: "CSS transitions, anchor navigation, and IntersectionObserver support navigation and UI behavior where appropriate. This gives up advanced animation control in exchange for fewer dependencies.",
+        },
+        {
+          title: "Responsive and accessible design",
+          detail: "Mobile-first layouts, keyboard navigation, visible focus, and reduced-motion support make the catalog usable across devices. Essential content remains visible without JavaScript; final accessibility review is still part of release preparation.",
+        },
+        {
+          title: "AI-assisted implementation, human ownership",
+          detail: "Codex accelerates implementation. The human owner defines requirements, reviews code and visual output, runs and reviews tests, and owns product, architecture, and release decisions.",
+        },
+      ],
+      failureAndTesting: [
+        "Owner-reported preliminary Playwright browser testing covered seven viewport widths: 320, 360, 390, 768, 1024, 1280, and 1440px.",
+        "Preliminary QA covered mobile navigation, scrollspy and anchor behavior, horizontal overflow, keyboard navigation and focus, reduced motion, and no-JavaScript content visibility.",
+        "Availability and scheduling are confirmed manually through WhatsApp. The catalog does not accept an order or guarantee stock; contacting Mama Dina starts a conversation rather than an automatic confirmation.",
+        "Accessibility review and SEO and performance checks are preliminary. Image optimization and final accessibility, SEO, and performance reviews remain part of release preparation, alongside full regression and UAT.",
+        "These checks describe development and preliminary QA, not final production certification. No numerical test coverage, Lighthouse score, or measured performance improvement is claimed.",
+      ],
+      results: [
+        "A working static website prototype exists, with the product catalog and primary content sections implemented.",
+        "Responsive navigation and UI interactions have been developed; preliminary browser testing has been performed and a preview version has been available.",
+        "WhatsApp contact integration is implemented. Availability, scheduling, and order confirmation remain manual; no automatic order confirmation is provided.",
+        "No verified sales growth, conversion uplift, or customer-growth metrics are available. Overall project status: pre-release.",
+      ],
+      remainingWork: [
+        "Pesanan Acara — Draft / Pending Approval: business requirements and content are not final.",
+        "Final product image and information approval.",
+        "Image asset optimization.",
+        "Final accessibility, SEO, and performance reviews.",
+        "Full regression and UAT.",
+        "Production hosting and release approval.",
+      ],
+    },
   },
 ];
 

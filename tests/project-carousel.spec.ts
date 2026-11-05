@@ -14,7 +14,8 @@ for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
     await carousel.getByRole("button", { name: "Next project" }).click();
     await expect(dina).toBeVisible();
     await expect(whatsapp).toBeHidden();
-    await expect(carousel.getByRole("link", { name: "View Case Study" })).toBeHidden();
+    await expect(carousel.getByRole("link", { name: "View Case Study" })).toBeVisible();
+    await expect(carousel.getByRole("link", { name: "View Case Study" })).toHaveAttribute("href", "/projects/dina-cake");
     await expect(carousel).toContainText("Pre-release");
     await expect(carousel).toContainText("Implemented — Landing page");
     await expect(carousel).not.toContainText("Netlify");
@@ -31,7 +32,7 @@ for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
     await expect(dina).toBeVisible();
     await expect(carousel.getByRole("button", { name: "Show project 2: Dina Cake" }))
       .toHaveAttribute("aria-current", "true");
-    expect((await request.get("/projects/dina-cake")).status()).toBe(404);
+    expect((await request.get("/projects/dina-cake")).status()).toBe(200);
   });
 }
 

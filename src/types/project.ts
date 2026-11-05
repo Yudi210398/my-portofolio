@@ -10,6 +10,18 @@ export type ProjectMilestone = {
 };
 
 export type CaseStudy = {
+  sourceNote?: string;
+  catalogShowcase?: {
+    subtitle: string;
+    summary: string;
+    projectType: string;
+    ownershipRole: string;
+    architecture: string;
+    steps: readonly { title: string; description: string }[];
+  };
+  architectureFlow?: readonly string[];
+  results?: readonly string[];
+  remainingWork?: readonly string[];
   businessProblem: string;
   responsibilities: readonly string[];
   architecture: readonly string[];
