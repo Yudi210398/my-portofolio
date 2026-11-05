@@ -1,10 +1,11 @@
 export type ProjectVisibility = "candidate" | "draft" | "published";
 
-export type ProjectStatus = "in-progress" | "completed";
+export type ProjectStatus = "in-progress" | "pre-release" | "completed";
 
 export type ProjectMilestone = {
   title: string;
   status: "completed" | "pending";
+  statusLabel?: string;
   detail: string;
 };
 

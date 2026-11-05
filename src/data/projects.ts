@@ -61,6 +61,37 @@ export const projects: readonly Project[] = [
       ],
     },
   },
+  {
+    slug: "dina-cake",
+    title: "Dina Cake",
+    role: "Frontend & Product Engineering",
+    status: "pre-release",
+    visibility: "published",
+    summary:
+      "A mobile-first website for a homemade cake business, showcasing product catalogs, explaining the ordering process, and connecting customers via WhatsApp.",
+    stack: ["HTML5", "CSS3", "JavaScript", "Playwright"],
+    milestones: [
+      {
+        title: "Static Website & Catalog",
+        status: "completed",
+        statusLabel: "Implemented",
+        detail:
+          "Landing page, cake catalog, ordering steps, and responsive UI.",
+      },
+      {
+        title: "WhatsApp Contact Integration",
+        status: "completed",
+        statusLabel: "Implemented",
+        detail: "Official WhatsApp number and final configuration.",
+      },
+      {
+        title: "Final QA & Production Release",
+        status: "pending",
+        detail:
+          "Asset optimization, final testing (accessibility, SEO, performance), and go-live approval.",
+      },
+    ],
+  },
 ];
 
 const validSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

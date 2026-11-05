@@ -13,7 +13,29 @@ const technologyLogos: Partial<Record<string, string>> = {
   Prisma: "/images/tech/prisma.svg",
   Docker: "/images/tech/docker.svg",
   MySQL: "/images/tech/mysql.svg",
+  JavaScript: "/images/tech/javascript.svg",
+  HTML5: "/images/tech/html5.svg",
+  CSS3: "/images/tech/css3.svg",
+  Playwright: "/images/tech/playwright.svg",
 };
+
+function CakeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6"
+    >
+      <path d="M4 13h16v8H4zM7 13V9h10v4M12 9V6M12 2c-2 2-2 3 0 4 2-1 2-2 0-4Z" />
+      <path d="M4 16c2 2 3-2 5 0s3-2 5 0 4-2 6 0" />
+    </svg>
+  );
+}
 
 function MessageIcon() {
   return (
@@ -55,9 +77,17 @@ function MilestoneIcon({ completed }: { completed: boolean }) {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const hasProgress = Boolean(project.milestones?.length || project.progress);
+  const isDinaCake = project.slug === "dina-cake";
+  const statusLabels = {
+    "in-progress": "In Progress",
+    "pre-release": "Pre-release",
+    completed: "Completed",
+  };
 
   return (
-    <article className="rounded-2xl border border-border bg-surface p-5 sm:p-8 lg:p-10">
+    <article
+      className={`h-full rounded-2xl border border-border bg-surface p-5 sm:p-8 lg:p-10 ${isDinaCake ? "bg-linear-to-br from-accent-blue/5 via-surface to-background/30" : ""}`}
+    >
       {project.thumbnail && (
         <Image
           src={project.thumbnail.src}
@@ -79,13 +109,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex flex-wrap items-center gap-4">
             <span
               aria-hidden="true"
-              className="flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/60 text-accent-blue"
+              className={`flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/60 ${isDinaCake ? "text-amber-300" : "text-accent-blue"}`}
             >
-              <MessageIcon />
+              {isDinaCake ? <CakeIcon /> : <MessageIcon />}
             </span>
             <p className="text-sm font-medium text-muted">{project.role}</p>
-            <span className="rounded-full border border-accent-blue/40 bg-accent-blue/10 px-3 py-1 text-xs font-semibold text-foreground">
-              {project.status === "in-progress" ? "In Progress" : "Completed"}
+            <span
+              className={`rounded-full border px-3 py-1 text-xs font-semibold ${isDinaCake ? "border-amber-400/50 bg-amber-400/10 text-amber-200" : "border-accent-blue/40 bg-accent-blue/10 text-foreground"}`}
+            >
+              {statusLabels[project.status]}
             </span>
           </div>
           <h3 className="mt-7 max-w-[22ch] text-3xl font-semibold leading-tight tracking-[-0.025em] text-foreground sm:text-4xl">
@@ -104,7 +136,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               return (
                 <li
                   key={technology}
-                  className="inline-flex min-h-9 items-center gap-2 rounded-md border border-border bg-background/60 px-3 py-1.5 text-sm font-medium text-foreground"
+                  className={`inline-flex min-h-9 items-center gap-2 border border-border bg-background/60 px-3 py-1.5 text-sm font-medium text-foreground ${isDinaCake ? "rounded-full" : "rounded-md"}`}
                 >
                   {logo && (
                     <Image
@@ -175,8 +207,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                           {milestone.title}
                         </p>
                         <p className="mt-1 text-sm leading-relaxed text-muted">
-                          {completed ? "Completed" : "Pending"} —{" "}
-                          {milestone.detail}
+                          {milestone.statusLabel ??
+                            (completed ? "Completed" : "Pending")}{" "}
+                          — {milestone.detail}
                         </p>
                       </div>
                     </ScrollReveal>

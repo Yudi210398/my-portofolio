@@ -1,6 +1,7 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { ProjectCard } from "@/components/sections/ProjectCard";
+import { ProjectCarousel } from "@/components/sections/ProjectCarousel";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { getPublishedProjects } from "@/data/projects";
 
@@ -30,11 +31,11 @@ export function Projects() {
             No projects are approved for publication yet.
           </p>
         ) : (
-          <div className="mt-10 grid gap-6">
+          <ProjectCarousel titles={publishedProjects.map((project) => project.title)}>
             {publishedProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
-          </div>
+          </ProjectCarousel>
         )}
       </Container>
     </Section>

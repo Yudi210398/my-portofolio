@@ -1,0 +1,61 @@
+.stage {
+  display: grid;
+  min-width: 0;
+}
+
+/* All slides contribute to the row height, preventing jumps between projects. */
+.slide {
+  grid-area: 1 / 1;
+  min-width: 0;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease-out;
+}
+
+.active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.control,
+.indicator {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.control {
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  background: var(--color-surface);
+}
+
+.control:hover {
+  border-color: var(--color-accent-blue);
+}
+
+.dot,
+.dotActive {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-muted);
+}
+
+.dotActive {
+  background: var(--color-accent-blue);
+  outline: 1px solid var(--color-accent-blue);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none;
+  }
+}
