@@ -1,26 +1,25 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { getWhatsAppHref, WHATSAPP_NUMBER } from "@/config/public-contact";
+import { CONTACT_EMAIL, getWhatsAppHref, LINKEDIN_URL, WHATSAPP_NUMBER } from "@/config/public-contact";
 
 type ContactMethod = {
   title: string;
   description: string;
   icon: "email" | "linkedin" | "github" | "whatsapp";
   href?: string;
-  status?: string;
 };
 
 const contactMethods: readonly ContactMethod[] = [
   {
     title: "Email",
     description: "Direct professional inquiries",
-    status: "Pending public approval",
+    href: `mailto:${CONTACT_EMAIL}`,
     icon: "email",
   },
   {
     title: "LinkedIn",
     description: "Professional profile",
-    status: "Not publicly shared yet",
+    href: LINKEDIN_URL,
     icon: "linkedin",
   },
   {
@@ -33,7 +32,6 @@ const contactMethods: readonly ContactMethod[] = [
     title: "WhatsApp",
     description: "Direct professional messages",
     href: getWhatsAppHref(WHATSAPP_NUMBER) ?? undefined,
-    status: "Number pending public approval",
     icon: "whatsapp",
   },
 ];
@@ -123,7 +121,7 @@ export function Contact() {
                   {method.description}
                 </p>
 
-                {method.href ? (
+                {method.href && (
                   <a
                     href={method.href}
                     target={
@@ -139,13 +137,9 @@ export function Contact() {
                     {method.icon === "whatsapp"
                       ? "Chat on WhatsApp"
                       : method.icon === "email"
-                        ? "Send email"
+                        ? "Send Email"
                         : `Visit ${method.title}`}
                   </a>
-                ) : (
-                  <p className="mt-5 border-t border-border pt-4 text-xs font-medium tracking-wide text-muted sm:mt-auto">
-                    {method.status}
-                  </p>
                 )}
               </li>
             ))}

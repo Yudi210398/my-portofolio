@@ -45,6 +45,26 @@ function MessageIcon() {
   );
 }
 
+function InventoryIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6"
+    >
+      <path d="m12 2 4.5 2.5v5L12 12 7.5 9.5v-5L12 2Z" />
+      <path d="M7.5 4.5 12 7l4.5-2.5M12 7v5" />
+      <path d="M7.5 9.5 3 12v5l4.5 2.5L12 17v-5m-9 0 4.5 2.5L12 12m-4.5 2.5v5" />
+      <path d="M16.5 9.5 21 12v5l-4.5 2.5L12 17m0-5 4.5 2.5L21 12m-4.5 2.5v5" />
+    </svg>
+  );
+}
+
 function MilestoneIcon({ completed }: { completed: boolean }) {
   return (
     <svg
@@ -67,10 +87,20 @@ function MilestoneIcon({ completed }: { completed: boolean }) {
 export function ProjectCard({ project }: ProjectCardProps) {
   const hasProgress = Boolean(project.milestones?.length || project.progress);
   const isDinaCake = project.slug === "dina-cake";
+  const ProjectIcon = isDinaCake
+    ? CakeIcon
+    : project.slug === "batik-app"
+      ? InventoryIcon
+      : MessageIcon;
   const statusLabels = {
     "in-progress": "In Progress",
     "pre-release": "Pre-release",
     completed: "Completed",
+  };
+  const statusStyles = {
+    "in-progress": "border-accent-blue/40 bg-accent-blue/10 text-foreground",
+    "pre-release": "border-amber-400/50 bg-amber-400/10 text-amber-200",
+    completed: "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
   };
 
   return (
@@ -100,11 +130,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
               aria-hidden="true"
               className={`flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/60 ${isDinaCake ? "text-amber-300" : "text-accent-blue"}`}
             >
-              {isDinaCake ? <CakeIcon /> : <MessageIcon />}
+              <ProjectIcon />
             </span>
             <p className="text-sm font-medium text-muted">{project.role}</p>
             <span
-              className={`rounded-full border px-3 py-1 text-xs font-semibold ${isDinaCake ? "border-amber-400/50 bg-amber-400/10 text-amber-200" : "border-accent-blue/40 bg-accent-blue/10 text-foreground"}`}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusStyles[project.status]}`}
             >
               {statusLabels[project.status]}
             </span>
@@ -142,25 +172,28 @@ export function ProjectCard({ project }: ProjectCardProps) {
               );
             })}
           </ul>
-          {project.caseStudy && (
-            <Link
-              href={`/projects/${project.slug}`}
-              className="mt-8 inline-flex min-h-11 items-center rounded-md border border-accent-blue/50 px-5 py-2 font-medium text-foreground hover:border-accent-blue hover:bg-accent-blue/10"
-            >
-              View Case Study
-            </Link>
-          )}
-          {project.links && project.links.length > 0 && (
+          {(project.caseStudy || Boolean(project.links?.length)) && (
             <div className="mt-8 flex flex-wrap gap-4">
-              {project.links.map((link) => (
+              {project.caseStudy && (
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="inline-flex min-h-11 items-center rounded-md border border-accent-blue/50 px-5 py-2 font-medium text-foreground hover:border-accent-blue hover:bg-accent-blue/10"
+                >
+                  View Case Study
+                </Link>
+              )}
+              {project.links?.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center font-medium text-foreground underline decoration-accent-blue underline-offset-4 hover:text-accent-blue"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border px-5 py-2 font-medium text-foreground hover:border-accent-blue hover:bg-accent-blue/10"
                 >
                   {link.label}
+                  <svg aria-hidden="true" viewBox="0 0 16 16" className="size-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 3H3v10h10v-3M9 3h4v4m0-4L7 9" />
+                  </svg>
                 </a>
               ))}
             </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/container";
+import { BatikCaseStudyIntro, BatikClosingPanel } from "@/components/case-study/BatikCaseStudyIntro";
 import { CaseStudySection } from "@/components/case-study/CaseStudySection";
 import { CatalogCaseStudyIntro } from "@/components/case-study/CatalogCaseStudyIntro";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
@@ -54,6 +55,10 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
   if (!project?.caseStudy) notFound();
 
   const { caseStudy } = project;
+  const { engineeringShowcase } = caseStudy;
+  const applicationLink = engineeringShowcase
+    ? project.links?.find(({ label }) => label === "View Application")
+    : undefined;
 
   return (
     <main id="main-content" className="pb-16 sm:pb-24">
@@ -67,7 +72,9 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           </Link>
         </nav>
 
-        {caseStudy.catalogShowcase ? (
+        {engineeringShowcase ? (
+          <BatikCaseStudyIntro project={project} showcase={engineeringShowcase} applicationLink={applicationLink} />
+        ) : caseStudy.catalogShowcase ? (
           <CatalogCaseStudyIntro project={project} showcase={caseStudy.catalogShowcase} />
         ) : (
         <header className="grid gap-10 border-b border-border pb-14 pt-12 sm:pb-20 sm:pt-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.6fr)] lg:gap-20">
@@ -139,6 +146,11 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         </CaseStudySection>
 
         <CaseStudySection number="03" id="system-architecture" title="System Architecture">
+          {engineeringShowcase && (
+            <a className="mb-5 block w-fit rounded-sm text-sm underline underline-offset-4 hover:text-foreground" href="#architecture-overview">
+              Return to the architecture diagram
+            </a>
+          )}
           {caseStudy.architectureFlow && (
             <ol aria-label="System architecture flow" className="mb-8 space-y-3 text-sm">
               {caseStudy.architectureFlow.map((step, index, steps) => (
@@ -195,14 +207,14 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         <CaseStudySection
           number="06"
           id="current-results"
-          title="Current Results & Remaining Work"
+          title={engineeringShowcase ? "Current Results" : "Current Results & Remaining Work"}
         >
           {caseStudy.results && (
             <ul className="mb-10 space-y-4">
               {caseStudy.results.map((result) => <li key={result}>{result}</li>)}
             </ul>
           )}
-          {project.milestones?.length ? (
+          {!engineeringShowcase && (project.milestones?.length ? (
             <ol className="space-y-6">
               {project.milestones.map((milestone, index) => (
                 <ScrollReveal as="li" key={milestone.title} delay={index * 0.05}>
@@ -224,7 +236,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
                 <p>{project.progress}</p>
               </ScrollReveal>
             )
-          )}
+          ))}
           {caseStudy.remainingWork && (
             <div className="mt-10">
               <h3 className="text-lg font-semibold text-foreground">Remaining work before release</h3>
@@ -234,6 +246,10 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
             </div>
           )}
         </CaseStudySection>
+
+        {engineeringShowcase && (
+          <BatikClosingPanel summary={engineeringShowcase.closingSummary} applicationLink={applicationLink} />
+        )}
 
         <div className="border-t border-border pt-8">
           <Link

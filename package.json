@@ -8,12 +8,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:e2e": "npm run build && node tests/run-static-e2e.mjs"
   },
   "dependencies": {
     "geist": "1.7.2",
     "motion": "14.6.0",
-    "next": "16.4.2",
+    "next": "^16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

@@ -11,6 +11,14 @@ export type ProjectMilestone = {
 
 export type CaseStudy = {
   sourceNote?: string;
+  engineeringShowcase?: {
+    subtitle: string;
+    summary: string;
+    role: string;
+    lifecycle: string;
+    repository: string;
+    closingSummary: string;
+  };
   catalogShowcase?: {
     subtitle: string;
     summary: string;

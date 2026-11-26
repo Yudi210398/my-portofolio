@@ -68,6 +68,7 @@ test("opening a case study does not smooth-scroll the new page from the old posi
   page,
 }) => {
   await page.goto("/#work");
+  await page.getByRole("button", { name: "Show project 3: WhatsApp Notification Service" }).click();
   await page.getByRole("link", { name: "View Case Study" }).click();
   await expect(page).toHaveURL(/\/projects\/whatsapp-notification-service$/);
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior))

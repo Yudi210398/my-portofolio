@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize, sep } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const root = join(process.cwd(), "out");
 const types = {
@@ -16,7 +17,7 @@ const types = {
   ".woff2": "font/woff2",
 };
 
-createServer(async (request, response) => {
+export const staticServer = createServer(async (request, response) => {
   let pathname;
   try {
     pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
@@ -45,4 +46,8 @@ createServer(async (request, response) => {
   }
 
   response.writeHead(404, { "content-type": types[".html"] }).end(await readFile(join(root, "404.html")));
-}).listen(4173, "127.0.0.1");
+});
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  staticServer.listen(4173, "127.0.0.1");
+}

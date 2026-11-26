@@ -8,6 +8,7 @@ test("visitor journey and published links", async ({ page }) => {
   await page.getByRole("link", { name: "View Selected Work" }).click();
   await expect(page).toHaveURL(/#work$/);
   await expect(page.getByRole("heading", { name: "Selected work." })).toBeVisible();
+  await page.getByRole("button", { name: "Show project 3: WhatsApp Notification Service" }).click();
   await page.getByRole("link", { name: "View Case Study" }).click();
   await expect(page).toHaveURL(new RegExp(`${caseStudy}/?$`));
   await expect(page.getByRole("heading", { level: 1 })).toContainText("WhatsApp Notification Service");
@@ -27,9 +28,9 @@ test("visitor journey and published links", async ({ page }) => {
       has: page.getByRole("heading", { name: channel, exact: true }),
     });
     await expect(method).toBeVisible();
-    await expect(method.getByRole("link")).toHaveCount(0);
+    await expect(method.getByRole("link")).toHaveCount(1);
   }
-  await expect(contact.getByRole("link")).toHaveCount(1);
+  await expect(contact.getByRole("link")).toHaveCount(4);
 });
 
 test("keyboard can reach Hero CTA with visible focus", async ({ page }) => {
@@ -58,14 +59,18 @@ test("reduced motion and JavaScript disabled keep content readable", async ({ br
   const staticPage = await noScript.newPage();
   await staticPage.goto("/");
   await expect(staticPage.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(staticPage.getByRole("link", { name: "View Case Study" })).toBeVisible();
+  const batik = staticPage.getByRole("group", { name: "1 of 3: Batik App" });
+  await expect(batik.getByRole("link", { name: "View Application" })).toBeVisible();
+  await batik.getByRole("link", { name: "View Case Study" }).click();
+  await expect(staticPage).toHaveURL(/\/projects\/batik-app$/);
+  await expect(staticPage.getByRole("heading", { level: 1, name: "Batik App" })).toBeVisible();
   await staticPage.goto(caseStudy);
   await expect(staticPage.getByRole("heading", { level: 1 })).toContainText("WhatsApp Notification Service");
   await noScript.close();
 });
 
-test("export contains only approved project content and valid internal links", async ({ page, request }) => {
-  for (const path of ["/", caseStudy]) {
+test("export contains only approved project content and valid internal links", async ({ page, request, baseURL }) => {
+  for (const path of ["/", caseStudy, "/projects/batik-app"]) {
     const response = await request.get(path);
     expect(response.status()).toBe(200);
     const html = await response.text();
@@ -75,7 +80,7 @@ test("export contains only approved project content and valid internal links", a
       links.map((link) => link.getAttribute("href")).filter((href): href is string => Boolean(href)),
     );
     for (const href of new Set(hrefs)) {
-      const url = new URL(href, "http://127.0.0.1:4173");
+      const url = new URL(href, baseURL);
       expect((await request.get(url.pathname)).status(), href).toBe(200);
       if (url.hash) {
         await page.goto(url.pathname);

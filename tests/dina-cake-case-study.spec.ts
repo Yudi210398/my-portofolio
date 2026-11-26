@@ -5,7 +5,7 @@ const route = "/projects/dina-cake";
 test("Dina carousel CTA reaches a generated case study and returns to selected work", async ({ page }) => {
   await page.goto("/#work");
   const carousel = page.getByRole("region", { name: "Selected projects" });
-  await expect(carousel.getByRole("heading", { name: "WhatsApp Notification Service" })).toBeVisible();
+  await expect(carousel.getByRole("heading", { name: "Batik App" })).toBeVisible();
   await carousel.getByRole("button", { name: "Next project" }).click();
   const cta = carousel.getByRole("link", { name: "View Case Study" });
   await expect(cta).toBeVisible();

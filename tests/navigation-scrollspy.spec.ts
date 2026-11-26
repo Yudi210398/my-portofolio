@@ -96,6 +96,7 @@ test("mobile shares active section and case study has no stale active item", asy
   await nav.getByRole("link", { name: "Work" }).click();
   await expect(nav).toBeHidden();
   await expect(page).toHaveURL(/#work$/);
+  await page.getByRole("button", { name: "Show project 3: WhatsApp Notification Service" }).click();
   await page.getByRole("link", { name: "View Case Study" }).click();
   await menu.click();
   await expect(nav.locator('[aria-current="location"]')).toHaveCount(0);
