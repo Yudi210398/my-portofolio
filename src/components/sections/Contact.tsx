@@ -1,6 +1,12 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { CONTACT_EMAIL, getWhatsAppHref, LINKEDIN_URL, WHATSAPP_NUMBER } from "@/config/public-contact";
+import {
+  CONTACT_EMAIL,
+  getWhatsAppHref,
+  LINKEDIN_URL,
+  WHATSAPP_NUMBER,
+} from "@/config/public-contact";
+import { CopyEmailButton } from "./CopyEmailButton";
 
 type ContactMethod = {
   title: string;
@@ -13,7 +19,7 @@ const contactMethods: readonly ContactMethod[] = [
   {
     title: "Email",
     description: "Direct professional inquiries",
-    href: `mailto:${CONTACT_EMAIL}`,
+    href: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}`,
     icon: "email",
   },
   {
@@ -121,7 +127,18 @@ export function Contact() {
                   {method.description}
                 </p>
 
-                {method.href && (
+                {method.icon === "email" ? (
+                  <CopyEmailButton email={CONTACT_EMAIL}>
+                    <a
+                      href={method.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-accent-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-blue"
+                    >
+                      Open in Gmail
+                    </a>
+                  </CopyEmailButton>
+                ) : method.href && (
                   <a
                     href={method.href}
                     target={
@@ -136,9 +153,7 @@ export function Contact() {
                   >
                     {method.icon === "whatsapp"
                       ? "Chat on WhatsApp"
-                      : method.icon === "email"
-                        ? "Send Email"
-                        : `Visit ${method.title}`}
+                      : `Visit ${method.title}`}
                   </a>
                 )}
               </li>
