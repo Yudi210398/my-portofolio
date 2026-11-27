@@ -120,7 +120,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <div
         className={
           hasProgress
-            ? "grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10"
+            ? "grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10"
             : "grid"
         }
       >
@@ -200,10 +200,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
           )}
         </ScrollReveal>
         {hasProgress && (
-          <div className="border-t border-border pt-8 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+          <div className="hidden lg:block lg:border-l lg:border-border lg:pl-10">
             <ScrollReveal>
               <h4 className="text-sm font-semibold tracking-[0.08em] text-foreground uppercase">
-                Project progress
+                {project.closureNote ? "Project outcomes" : "Project progress"}
               </h4>
             </ScrollReveal>
             {project.milestones?.length ? (
@@ -229,9 +229,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                           {milestone.title}
                         </p>
                         <p className="mt-1 text-sm leading-relaxed text-muted">
-                          {milestone.statusLabel ??
-                            (completed ? "Completed" : "Pending")}{" "}
-                          — {milestone.detail}
+                          {!project.closureNote &&
+                            `${milestone.statusLabel ?? (completed ? "Completed" : "Pending")} — `}
+                          {milestone.detail}
                         </p>
                       </div>
                     </ScrollReveal>
@@ -244,6 +244,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
                   {project.progress}
                 </p>
               </ScrollReveal>
+            )}
+            {project.closureNote && (
+              <p className="mt-6 border-t border-border pt-4 text-sm leading-relaxed text-muted">
+                {project.closureNote}
+              </p>
             )}
           </div>
         )}

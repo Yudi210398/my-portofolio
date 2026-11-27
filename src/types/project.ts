@@ -40,6 +40,23 @@ export type CaseStudy = {
   failureAndTesting: readonly string[];
 };
 
+export type CaseStudyArticle = {
+  subtitle: string;
+  projectType: string;
+  statusLabel: string;
+  stack: readonly string[];
+  sourceNote: string;
+  sections: readonly {
+    id: string;
+    title: string;
+    blocks: readonly {
+      title?: string;
+      paragraphs?: readonly string[];
+      points?: readonly string[];
+    }[];
+  }[];
+};
+
 type ProjectBase = {
   slug: string;
   title: string;
@@ -60,10 +77,11 @@ export type PublishedProject = ProjectBase & {
   role: string;
   summary: string;
   progress?: string;
+  closureNote?: string;
   milestones?: readonly ProjectMilestone[];
   stack: readonly string[];
   status: ProjectStatus;
-  caseStudy?: CaseStudy;
+  caseStudy?: CaseStudy | CaseStudyArticle;
 };
 
 export type UnpublishedProject = ProjectBase & {

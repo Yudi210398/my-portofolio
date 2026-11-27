@@ -55,7 +55,9 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
   if (!project?.caseStudy) notFound();
 
   const { caseStudy } = project;
-  const { engineeringShowcase } = caseStudy;
+  const article = "sections" in caseStudy ? caseStudy : undefined;
+  const standard = "businessProblem" in caseStudy ? caseStudy : undefined;
+  const engineeringShowcase = standard?.engineeringShowcase;
   const applicationLink = engineeringShowcase
     ? project.links?.find(({ label }) => label === "View Application")
     : undefined;
@@ -74,8 +76,8 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
 
         {engineeringShowcase ? (
           <BatikCaseStudyIntro project={project} showcase={engineeringShowcase} applicationLink={applicationLink} />
-        ) : caseStudy.catalogShowcase ? (
-          <CatalogCaseStudyIntro project={project} showcase={caseStudy.catalogShowcase} />
+        ) : standard?.catalogShowcase ? (
+          <CatalogCaseStudyIntro project={project} showcase={standard.catalogShowcase} />
         ) : (
         <header className="grid gap-10 border-b border-border pb-14 pt-12 sm:pb-20 sm:pt-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.6fr)] lg:gap-20">
           <div className="min-w-0">
@@ -85,6 +87,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
             <h1 className="mt-6 max-w-[16ch] text-[clamp(2.75rem,6vw,5.5rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-foreground">
               {project.title}
             </h1>
+            {article && <p className="mt-4 text-lg font-medium text-foreground sm:text-xl">{article.subtitle}</p>}
             <p className="mt-7 max-w-[60ch] text-base leading-relaxed text-muted sm:text-xl">
               {project.summary}
             </p>
@@ -98,12 +101,18 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
                 </dt>
                 <dd className="mt-2 font-medium text-foreground">{project.role}</dd>
               </div>
+              {article && (
+                <div>
+                  <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Project Type</dt>
+                  <dd className="mt-2 font-medium text-foreground">{article.projectType}</dd>
+                </div>
+              )}
               <div>
                 <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
                   Status
                 </dt>
                 <dd className="mt-2 font-medium text-accent-blue">
-                  {project.status === "in-progress" ? "In Progress" : project.status === "pre-release" ? "Pre-release" : "Completed"}
+                  {article?.statusLabel ?? (project.status === "in-progress" ? "In Progress" : project.status === "pre-release" ? "Pre-release" : "Completed")}
                 </dd>
               </div>
               <div>
@@ -111,7 +120,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
                   Stack
                 </dt>
                 <dd className="mt-2 leading-relaxed text-foreground">
-                  {project.stack.join(" · ")}
+                  {(article?.stack ?? project.stack).join(" · ")}
                 </dd>
               </div>
             </dl>
@@ -123,9 +132,28 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           {caseStudy.sourceNote ?? "Implementation details below are reported by the project owner. The separate backend repository has not been independently reviewed for this case study."}
         </p>
 
+        {article?.sections.map(({ id, title, blocks }, index) => (
+          <CaseStudySection key={id} number={String(index + 1).padStart(2, "0")} id={id} title={title}>
+            <div className="space-y-6">
+              {blocks.map(({ title: blockTitle, paragraphs, points }) => (
+                <div key={blockTitle ?? paragraphs?.[0] ?? points?.[0]} className="space-y-3">
+                  {blockTitle && <h3 className="text-lg font-semibold leading-snug text-foreground">{blockTitle}</h3>}
+                  {paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  {points && (
+                    <ul className="list-disc space-y-2 pl-5">
+                      {points.map((point) => <li key={point}>{point}</li>)}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CaseStudySection>
+        ))}
+
+        {standard && <>
         <CaseStudySection number="01" id="business-problem" title="Business Problem">
           <ScrollReveal>
-            <p>{caseStudy.businessProblem}</p>
+            <p>{standard.businessProblem}</p>
           </ScrollReveal>
         </CaseStudySection>
 
@@ -136,7 +164,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         >
           <ScrollReveal>
             <ul className="space-y-4">
-              {caseStudy.responsibilities.map((item) => (
+              {standard.responsibilities.map((item) => (
                 <li key={item} className="border-l border-accent-blue/50 pl-5">
                   {item}
                 </li>
@@ -151,9 +179,9 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
               Return to the architecture diagram
             </a>
           )}
-          {caseStudy.architectureFlow && (
+          {standard.architectureFlow && (
             <ol aria-label="System architecture flow" className="mb-8 space-y-3 text-sm">
-              {caseStudy.architectureFlow.map((step, index, steps) => (
+              {standard.architectureFlow.map((step, index, steps) => (
                 <li key={step} className="flex items-start gap-4">
                   <span aria-hidden="true" className="shrink-0 font-mono text-accent-blue">{String(index + 1).padStart(2, "0")}</span>
                   <div className="min-w-0">
@@ -166,7 +194,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           )}
           <ScrollReveal>
             <ul className="space-y-5">
-              {caseStudy.architecture.map((item) => (
+              {standard.architecture.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -179,7 +207,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
           title="Engineering Decisions & Trade-offs"
         >
           <div className="space-y-8">
-            {caseStudy.decisions.map((decision, index) => (
+            {standard.decisions.map((decision, index) => (
               <ScrollReveal key={decision.title} delay={index * 0.05}>
                 <h3 className="text-lg font-semibold leading-snug text-foreground">
                   {decision.title}
@@ -197,7 +225,7 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         >
           <ScrollReveal>
             <ul className="space-y-5">
-              {caseStudy.failureAndTesting.map((item) => (
+              {standard.failureAndTesting.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -207,11 +235,11 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
         <CaseStudySection
           number="06"
           id="current-results"
-          title={engineeringShowcase ? "Current Results" : "Current Results & Remaining Work"}
+          title={engineeringShowcase || project.closureNote ? "Current Results" : "Current Results & Remaining Work"}
         >
-          {caseStudy.results && (
+          {standard.results && (
             <ul className="mb-10 space-y-4">
-              {caseStudy.results.map((result) => <li key={result}>{result}</li>)}
+              {standard.results.map((result) => <li key={result}>{result}</li>)}
             </ul>
           )}
           {!engineeringShowcase && (project.milestones?.length ? (
@@ -237,15 +265,17 @@ export default async function ProjectCaseStudy({ params }: PageProps) {
               </ScrollReveal>
             )
           ))}
-          {caseStudy.remainingWork && (
+          {project.closureNote && <p className="mt-6">{project.closureNote}</p>}
+          {standard.remainingWork && (
             <div className="mt-10">
               <h3 className="text-lg font-semibold text-foreground">Remaining work before release</h3>
               <ul className="mt-4 list-disc space-y-2 pl-5">
-                {caseStudy.remainingWork.map((item) => <li key={item}>{item}</li>)}
+                {standard.remainingWork.map((item) => <li key={item}>{item}</li>)}
               </ul>
             </div>
           )}
         </CaseStudySection>
+        </>}
 
         {engineeringShowcase && (
           <BatikClosingPanel summary={engineeringShowcase.closingSummary} applicationLink={applicationLink} />

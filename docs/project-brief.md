@@ -13,7 +13,7 @@
 ## Purpose and intended journey
 - Give visitors clear, credible evidence of backend engineering work and a way to contact the owner once a public contact method is approved.
 - Intended journey: Home -> Selected Work -> Case Study -> available GitHub/CV/Contact destinations. Show work and actions only when their content or destination is approved.
-- Success depends on authentic project evidence, accurate claims, and accessible presentation. WhatsApp Notification Service is approved for public display with the exact P-007 copy below.
+- Success depends on authentic project evidence, accurate claims, and accessible presentation. WhatsApp Notification Service is approved for public display with the current owner-approved copy below.
 
 ## Approved product direction
 - Design: Option 3 Modern Gradient, with dark navy, refined blue-violet gradients, and a restrained abstract/laptop/geometric hero visual.
@@ -24,16 +24,23 @@
 ## Project publication status
 | Project | Visibility | Approved public scope |
 | --- | --- | --- |
-| WhatsApp Notification Service | PUBLISHED | Backend Developer; In Progress. Summary, progress, and stack below are approved for the Work section. |
+| WhatsApp Notification Service | PUBLISHED | Backend Developer; Completed. Summary, outcomes, and stack below are approved for the Work section. |
 | Batik Management App | CANDIDATE | TODO: owner verification |
 | MIFO | CANDIDATE | TODO: owner verification |
 | Additional projects | TODO | TODO: owner selection and verification |
 
-Approved WhatsApp Notification Service summary: “A NestJS-based WhatsApp notification service for a tailoring business, designed to handle fitting reminders and order-completion notifications.”
+Approved WhatsApp Notification Service summary: “A NestJS-based backend service designed to automate WhatsApp fitting reminders and order-completion notifications for a tailoring business, with database-backed idempotency, secure internal APIs, and legacy system integration capabilities.”
 
-Approved progress: “Core backend implementation and local automated testing are complete. Integration with the existing PHP application and production deployment are still pending.”
+Approved outcomes:
 
-Approved stack: NestJS, TypeScript, MySQL, Prisma, Docker, Fonnte API. No screenshot, repository link, live demo, performance metric, or deployment claim is approved. Batik Management App and MIFO remain unpublished candidates.
+- **Core Backend Implementation** — Completed all core notification workflows.
+- **Automated Testing** — 176 automated tests passed during the latest verified test run, as reported by the owner.
+- **Legacy System Integration Readiness** — Implemented MySQL data access and a secure internal API for PHP integration. Live PHP integration was not completed.
+- **Docker Packaging** — Completed containerization and local deployment verification.
+
+Approved closure note: “Core backend development completed. Production rollout was not pursued due to business considerations.”
+
+Approved stack: NestJS, TypeScript, MySQL, Prisma, Fonnte API, Docker, Jest. No screenshot, repository link, live demo, performance metric, or production deployment claim is approved. Batik Management App and MIFO remain unpublished candidates.
 
 ## Publication boundaries
 - Do not invent years of industry experience, achievements, career statistics, certifications, client claims, feature completion, or project results.

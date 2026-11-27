@@ -19,6 +19,14 @@
   pointer-events: auto;
 }
 
+/* Below the card's Tailwind lg breakpoint, only the active slide sets the height. */
+@media (width < 64rem) {
+  .slide:not(.active) {
+    contain: size;
+    overflow: clip;
+  }
+}
+
 .control,
 .indicator {
   display: inline-flex;

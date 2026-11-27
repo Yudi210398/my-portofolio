@@ -26,7 +26,7 @@ Visitors browse the portfolio to assess the owner's engineering work and follow 
 
 - The approved public identity is Yudi Runat Masneno, Backend Engineer. The approved headline is “Backend Engineer | NestJS & TypeScript.”
 - The approved architecture is Next.js App Router, TypeScript, Tailwind CSS v4, static export, and local static content. No backend, database, ORM, authentication, CMS, or server actions.
-- WhatsApp Notification Service is approved for the Work section with the exact P-007 public copy recorded in `docs/project-brief.md`. Its core backend implementation and local automated testing are complete; legacy PHP integration and production deployment remain pending. Batik Management App and MIFO remain CANDIDATE. Candidate and draft content must not appear on public production routes.
+- WhatsApp Notification Service is approved for the Work section with the current owner-approved copy recorded in `docs/project-brief.md`. Batik Management App and MIFO remain CANDIDATE. Candidate and draft content must not appear on public production routes.
 - Public email, GitHub, LinkedIn, CV download, further About copy, unapproved project details/assets, and any additional projects remain TODO. Hide unavailable contact and download actions; do not use dummy URLs.
 - Do not invent experience duration, employers, achievements, statistics, certifications, feature completion, project results, or other personal or project claims.
 - The approved visual direction is Option 3 Modern Gradient: dark navy with restrained blue-violet accents and an abstract/laptop/geometric hero visual. Do not represent an AI-generated human portrait as the owner's photograph.
@@ -42,7 +42,7 @@ Visitors browse the portfolio to assess the owner's engineering work and follow 
 ## Evidence on Hand
 
 - The repository contains the approved visual direction reference at `assets/option-3-approved-visual-reference.png`; it is visual guidance, not evidence of identity or project outcomes.
-- The owner has approved one in-progress project, WhatsApp Notification Service, for the Work section using the P-007 summary, progress, role, status, and stack. No project screenshot, repository link, live demo, production result, or additional claim is approved. Batik Management App and MIFO remain CANDIDATE.
+- The owner has approved WhatsApp Notification Service for the Work section. See `docs/project-brief.md` for the approved project scope, status, and evidence. Batik Management App and MIFO remain CANDIDATE.
 - No verified career achievements, experience duration, testimonials, customer claims, or performance metrics are approved for publication.
 
 ## Product Principles

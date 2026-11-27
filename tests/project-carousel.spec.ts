@@ -1,17 +1,36 @@
 import { expect, test } from "@playwright/test";
 
-for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
+for (const width of [320, 360, 390, 639, 640, 768, 1023, 1024, 1280, 1440]) {
   test(`project carousel at ${width}px`, async ({ page, request }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/#work");
     await page.evaluate(() => document.fonts.ready);
     const carousel = page.getByRole("region", { name: "Selected projects" });
+    const twoColumns = width >= 1024;
+    async function expectProgressLayout() {
+      const card = carousel.getByRole("article");
+      const progress = card.getByText(/^Project (progress|outcomes)$/i);
+      if (twoColumns) {
+        await expect(progress).toBeVisible();
+      } else {
+        await expect(progress).toBeHidden();
+        const bottomSpace = await card.evaluate((element) => {
+          const links = Array.from(element.querySelectorAll("a"));
+          if (links.length === 0) throw new Error("Expected a project CTA");
+          const padding = parseFloat(getComputedStyle(element).paddingBottom);
+          const linksBottom = Math.max(...links.map((link) => link.getBoundingClientRect().bottom));
+          return element.getBoundingClientRect().bottom - linksBottom - padding;
+        });
+        expect(bottomSpace).toBeLessThanOrEqual(2);
+      }
+    }
     await expect(carousel.locator('[aria-live="polite"]')).toContainText("1 / 3");
     const whatsapp = carousel.getByRole("heading", { name: "WhatsApp Notification Service" });
     const dina = carousel.getByRole("heading", { name: "Dina Cake" });
     await expect(carousel.getByRole("heading", { name: "Batik App" })).toBeVisible();
     await expect(whatsapp).toBeHidden();
     await expect(dina).toBeHidden();
+    await expectProgressLayout();
     const before = await carousel.boundingBox();
     await carousel.getByRole("button", { name: "Next project" }).click();
     await expect(dina).toBeVisible();
@@ -20,9 +39,10 @@ for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
     await expect(carousel.getByRole("link", { name: "View Case Study" })).toHaveAttribute("href", "/projects/dina-cake");
     await expect(carousel).toContainText("Pre-release");
     await expect(carousel).toContainText("Implemented — Landing page");
+    await expectProgressLayout();
     await expect(carousel).not.toContainText("Netlify");
     const after = await carousel.boundingBox();
-    expect(Math.abs(after!.height - before!.height)).toBeLessThan(1);
+    if (twoColumns) expect(Math.abs(after!.height - before!.height)).toBeLessThan(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
     await carousel.getByRole("button", { name: "Previous project" }).focus();
     await page.keyboard.press("Enter");
@@ -35,6 +55,7 @@ for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
 
     await carousel.getByRole("button", { name: "Next project" }).click();
     await expect(whatsapp).toBeVisible();
+    await expectProgressLayout();
     await expect(carousel.getByRole("link", { name: "View Case Study" })).toHaveAttribute(
       "href", "/projects/whatsapp-notification-service",
     );
@@ -44,13 +65,17 @@ for (const width of [320, 360, 390, 768, 1024, 1280, 1440]) {
     await expect(batik.getByRole("heading", { name: "Batik App" })).toBeVisible();
     await expect(carousel.getByRole("article")).toHaveCount(1);
     await expect(carousel.locator('[aria-live="polite"]')).toContainText("1 / 3");
-    expect(Math.abs((await carousel.boundingBox())!.height - before!.height)).toBeLessThan(1);
+    if (twoColumns) expect(Math.abs((await carousel.boundingBox())!.height - before!.height)).toBeLessThan(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
     const card = batik.getByRole("article");
     await expect(batik.getByText("Completed", { exact: true })).toBeVisible();
     const lastMilestone = batik.getByText("Cloud-hosted and used in daily business operations.", { exact: false });
-    const [cardBox, milestoneBox] = await Promise.all([card.boundingBox(), lastMilestone.boundingBox()]);
-    expect(milestoneBox!.y + milestoneBox!.height).toBeLessThanOrEqual(cardBox!.y + cardBox!.height);
+    if (twoColumns) {
+      const [cardBox, milestoneBox] = await Promise.all([card.boundingBox(), lastMilestone.boundingBox()]);
+      expect(milestoneBox!.y + milestoneBox!.height).toBeLessThanOrEqual(cardBox!.y + cardBox!.height);
+    } else {
+      await expect(lastMilestone).toBeHidden();
+    }
 
     await carousel.getByRole("button", { name: "Previous project" }).click();
     await expect(whatsapp).toBeVisible();
